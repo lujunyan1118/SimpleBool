@@ -124,7 +124,7 @@ class Model:
             self.INITIAL[node]=state
         
         self.REG_NODES,self.TRUTH_TAB,self.MAPPING=ConstructTruthTab(open(INPUT['rules']).read(),self.KEEP)
-        model_verbose={'sync':'Synchronous','async':'General Asynchrounous','ROA':'Random Order Asynchrounous'}
+        model_verbose={'Sync':'Synchronous','GA':'General Asynchrounous','ROA':'Random Order Asynchrounous'}
         print '''Model initialization completed!
         
 Total nodes number:    %s
@@ -211,9 +211,9 @@ Simulation mode:    %s
             prev=ini_state
             collect[0]=StringAdd(collect[0],prev)
             for s in range(steps):
-                if self.INPUT['mode']=='sync':
+                if self.INPUT['mode']=='Sync':
                     next_state=IterOneSync(prev)
-                elif self.INPUT['mode']=='async':
+                elif self.INPUT['mode']=='GA':
                     next_state=IterOneAsync(prev)
                 elif self.INPUT['mode'] == 'ROA':
                     next_state=IterOneROA(prev)
@@ -245,7 +245,7 @@ def ParaParser(ParaFile):
              'rounds'   :    1,
              'steps'    :    1,
              'equi_steps':  0,
-             'mode'     :    'async',
+             'mode'     :    'ROA',
              'mutation_list' :  'nodes.txt',
              'mutation_mode'    :   'single',
              'observe_list' :   '',
@@ -282,7 +282,7 @@ def ParaParser(ParaFile):
     except:
         print "Error: Invalid input data types!"
 
-    if INPUT['mode'] not in ['async', 'sync','ROA']: print "Wrong simulation method! Using 'sync' or 'async'"
+    if INPUT['mode'] not in ['GA', 'Sync','ROA']: print "Wrong simulation method! Using 'GA', 'ROA' or 'Sync'"
     return INPUT
 
 
@@ -295,7 +295,7 @@ def ChangeInitial(NodesList,States,MutePairs):
         OutStates.append(''.join(State))
     return OutStates
 
-def simu_mutation(INPUT,missing='random',draw=False):
+def simu_mutation(INPUT,missing='random'):
     '''Do simulated mutation expriment of the model'''
     
     
@@ -326,12 +326,6 @@ def simu_mutation(INPUT,missing='random',draw=False):
             result,final=new_model.IterModel(missing=missing, InitialList=pre_modified) #actual mutation run for each mutation
             for out_node in INPUT['observe_list']:
                 mut_result[mute_pair].append(('%2.2f'%(sum(result_pre[out_node][-50:])/50),'%2.2f'%(sum(result[out_node][-50:])/50)))
-            if draw == True:
-                 #catenate pre_result and result
-                 result_all = {}
-                 for node in result_pre:
-                      result_all[node]=result_pre[node]+result[node]
-                 plot_result(result_all,['Proliferation','Apoptosis','NFKB','STAT3'],marker=False)
 
     print "Write mutation result to 'mutation_result.csv' "
     output=open('mutation_result.csv','w')
@@ -385,6 +379,8 @@ def GenerateCombinations(INPUT):
         return Combine
                 
 if __name__ == '__main__':
-    para=ParaParser(sys.argv[1])
-    simu_mutation(para,draw=False)
-    
+    try:
+        para=ParaParser(sys.argv[1])
+    except:
+        para=ParaParser('mutation.in')
+    simu_mutation(para)
