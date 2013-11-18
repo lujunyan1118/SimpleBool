@@ -85,5 +85,40 @@ missing=random
 
 **missing**: this parameter specified the states of those nodes whose initial states are not determined from 'turn_on','turn_off','ini_on' and 'ini_off'.
 
+* The parameter file, model input file should be in the same folder. 
+
+
+###Performing node perturbation studies using BoolMutation.py
+
+A parameter input file, named "mutation.in", is needed to perform the node perturbations using BoolMutations.py
+
+The "mutation.in" file looks like:
+```
+rules = CAC.txt
+turn_on = DC
+turn_off =
+ini_on = APC,DC
+ini_off = Apoptosis,Proliferation
+rounds = 500
+steps = 100
+mode=ROA
+mutation_list=list_ON.txt,list_OFF.txt
+keep_state=False,True
+mutation_mode=single
+observe_list=Proliferation,Apoptosis,STAT3,NFKB,BCATENIN
+```
+
+This first 8 parameters are the same as 'simu.in' used by BoolSimu.py
+
+**mutation_list**: 'mutation_list' specifies the files that contain the nodes that need to be perturbed. Sample input list of nodes: [list_ON.txt](http://www.ww),[list_OFF.txt](http://www.www).
+
+**keep_state**: 'keep_state' specifies the perturbed state of the nodes in each nodes list provided by 'mutation_list' parameter, accordingly.
+
+**mutation_mode**: this parameter denotes whether single or double perturbation study should be performed. 
+
+**observe_list**: this parameter specifies the nodes whose final states should be written out in the output file.
+
+*BoolMutation.py writes out a .csv file that contain the perturbed nodes and their states, as well as the states of the nodes specified in the 'observe_list'.
+
 
 
