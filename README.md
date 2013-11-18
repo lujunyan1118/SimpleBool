@@ -118,7 +118,7 @@ This first 8 parameters are the same as 'simu.in' used by BoolSimu.py
 
 **observe_list**: this parameter specifies the nodes whose final states should be written out in the output file.
 
-*BoolMutation.py writes out a .csv file that contain the perturbed nodes and their states, as well as the states of the nodes specified in the 'observe_list'.
+* BoolMutation.py writes out a .csv file that contain the perturbed nodes and their states, as well as the states of the nodes specified in the 'observe_list'.
 
 
 
