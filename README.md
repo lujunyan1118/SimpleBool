@@ -157,5 +157,5 @@ Zhongjie Liang  zjliang@suda.edu.cn
 Center for Systems Biology, Soochow University, 215006, China
 
 ##Copyrights
-Copyright (C) 2013  Junyan Lu under GPL3.0
+Copyright (C) 2013  Junyan Lu under [GPL3.0](https://github.com/lujunyan1118/SimpleBool/blob/master/LICENSE)
 
