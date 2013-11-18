@@ -86,7 +86,7 @@ missing=random
 
 **plot_nodes**: this parameter specifies the nodes whose simulation results needed to be plotted when the simulation is done.
 
-**missing**: this parameter specified the states of those nodes whose initial states are not determined from 'turn_on','turn_off','ini_on' and 'ini_off'.
+**missing**: this parameter specified the states of those nodes whose initial states are not determined from 'turn_on','turn_off','ini_on' and 'ini_off'. Values can be 'random', 'True', or 'False'.
 
 * The parameter file, model input file should be in the same folder. 
 
