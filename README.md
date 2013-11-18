@@ -108,7 +108,7 @@ mutation_mode=single
 observe_list=Proliferation,Apoptosis,STAT3,NFKB,BCATENIN
 ```
 
-This first 8 parameters are the same as 'simu.in' used by BoolSimu.py
+This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 
 **mutation_list**: 'mutation_list' specifies the files that contain the nodes that need to be perturbed. Sample input list of nodes: [list_ON.txt](http://www.ww),[list_OFF.txt](http://www.www).
 
@@ -120,5 +120,28 @@ This first 8 parameters are the same as 'simu.in' used by BoolSimu.py
 
 * BoolMutation.py writes out a .csv file that contain the perturbed nodes and their states, as well as the states of the nodes specified in the 'observe_list'.
 
+###Identifying attractors and basins of attraction using BoolAttractor.py
 
+Similarly, a parameter input file, "steady.in", is needed by BoolAttractor.py
+
+The "steady.in" file looks like:
+
+```
+rules = CAC.txt
+turn_on =
+turn_off =
+ini_on = 
+ini_off = Apoptosis,Proliferation
+mode=Sync
+steps=100000
+rounds=100
+initial_limit=0
+```
+This first eight parameters are the same as 'simu.in' used by BoolSimu.py
+
+**initial_limit**: this parameter specifies the maximum number of initial states generated when constructing the state transition graph. "0" means no limitation and BoolAttractory.py this will use all the possible initial states to construct the state transition graph. For a Boolean network with n nodes, the number of states is 2^n. Therefore, for large Boolean networks, using all the possible initial states may be extremely slow or run into memory problems.  
+
+* When finished, a folder named 'Data' contaning the all result files is generated in the working directory.
+
+* These results incude the whole state transition graph ('**TransGraph.txt**'), the information of point attractors and cyclic attractors ('**Point_attractors.csv**' and '**Cyclic_attractors.csv**'), summarization of the basins of attractors and basin intersections ('**Summary_basin.txt**'), and the nodes that stablized on a certain state in all the attractos ('**Fixed_nodes**').
 
