@@ -19,12 +19,11 @@
 
 from __future__ import division
 from collections import defaultdict
-from os import mkdir
+import os
 import array
 import cPickle
 import networkx as nx
 import numpy as np
-import os.path
 from random import randint,shuffle
 import sys
 
@@ -40,7 +39,7 @@ def ParaParser(ParaFile):
              'turn_off' :    '',
              'rounds'   :    1,
              'steps'    :    1,
-             'mode'     :    'sync',
+             'mode'     :    'Sync',
              'plot_nodes' :  '',
              'trans_mode' :  0,
              'initial_limit' : 0
@@ -73,7 +72,7 @@ def ParaParser(ParaFile):
     except:
         print "Error: Invalid input data types!"
 
-    if INPUT['mode'] not in ['async', 'sync']: print "Wrong simulation method! Using 'sync' or 'async'"
+    if INPUT['mode'] not in ['GA','ROA', 'Sync']: print "Wrong simulation method! Using 'Sync', 'GA', or 'ROA'"
     return INPUT
 
 def Nodes2Num(booltxt):
@@ -214,6 +213,13 @@ def IterOneROA(InitialState):
     #NewState = [str(self.TRUTH_TAB[i][tuple([int(NewState[j]) for j in self.REG_NODES[i]])]) for i in seq]
     return ''.join(NewState)
 
+def IterOneGA(InitialState):
+    '''Iterate model using asynchronous method (General Asynchronous model: update one random node per step)'''
+    update_index=randint(0,len(InitialState)-1)
+    NewState=list(InitialState)
+    NewState[update_index] = str(TruthTab[update_index][tuple([int(InitialState[index]) for index in RegNodes[update_index]])])
+    return ''.join(NewState)
+    
 def GenIni(NumNodes,limit=0) :
     '''a generator to generate initial state, and omit user defined inital state
     also show the progress at the same time'''
@@ -250,18 +256,13 @@ def MapStates(Mappings, StateBin):
         return index
    
     
-def Sampling(NumNodes,Rounds=50,Steps=50,PreDefine={},states_limit=0):
-    import scipy.sparse
-    def IterAsync(InitialState):
-        '''Iterate model using asynchronous method (General Asynchronous model: update one random node per step)'''
-        update_index=randint(0,len(InitialState)-1)
-        NewState=list(InitialState)
-        NewState[update_index] = str(TruthTab[update_index][tuple([int(InitialState[index]) for index in RegNodes[update_index]])])
-        return ''.join(NewState)
-
-    coo_matrix = scipy.sparse.coo_matrix
+def Sampling(NumNodes,Rounds=50,Steps=50,PreDefine={},states_limit=0,method='ROA'):
     Collect=defaultdict(int)
     Mappings={}
+    if method=='ROA':
+        RunMethod=IterOneROA
+    else:
+        RunMethod=IterOneGA
     FreeNum = NumNodes - len(PreDefine)
     PreState = ''.join([str(PreDefine[i]) for i in sorted(PreDefine)])  # generate a string of predefined state, must be sorted
     for IniState in GenIni(FreeNum,states_limit):
@@ -270,24 +271,13 @@ def Sampling(NumNodes,Rounds=50,Steps=50,PreDefine={},states_limit=0):
             prev=IniState
             prevID=MapStates(Mappings,IniState)
             for s in range(Steps):
-                next=IterOneROA(prev)
+                next=RunMethod(prev)
                 nextID=MapStates(Mappings,next)
                 Collect[(prevID,nextID)] += 1
                 prev=next
                 prevID=nextID
-    source=[]
-    target=[]
-    counts=[]
-    print 'Now constructing count matrix...'
-    for (i,j),z in Collect.iteritems():
-        source.append(i)
-        target.append(j)
-        counts.append(z)
-    TotalNum=len(Mappings)
-    print 'Total number of states %s'%TotalNum
-    C = coo_matrix((counts, (source,target)), shape=(TotalNum, TotalNum), dtype=int)
-    
-    return C,Mappings
+                
+    return Collect,Mappings
 
 def FindSteadyState(NumNodes, PreDefine={},states_limit=0):
     '''The main funtional module, iteratly call IterOneSync to iterate state, and determin whether it is a attractor
@@ -334,7 +324,7 @@ def FindAttractors(Counts,folder='Data'):
     print 'Now identifying attractors, please wait...'
     results = {}
     TransNet = nx.DiGraph()
-    for source, target in zip(Counts.row, Counts.col):  # add source and target node to network objects
+    for source, target in Counts:  # add source and target node to network objects
         TransNet.add_edge(source, target)
     TransNet.remove_edges_from(TransNet.selfloop_edges())
     attractors = nx.attracting_components(TransNet)  # find attractors (SCC with not out edge)
@@ -376,29 +366,6 @@ def EstimateSimple(Counts):
 
     return Populations
         
-def run(Counts, Symmetrize='Simple', Prior=0.0, OutDir="Data"):
-    '''Build transition matrix and calculate state populations'''
-    print 'Now building transition matrix and calculate state populations...'''
-    try:
-        mkdir('Data')
-    except:
-        pass
-
-    FnTProb = os.path.join(OutDir, "tProb.mtx")
-    FnTProbR = os.path.join(OutDir, "tProbReversible.mtx")
-    FnTCounts = os.path.join(OutDir, "tCounts")
-    FnPops = os.path.join(OutDir, "Populations.txt")
-    FnEnergy = os.path.join(OutDir, "Energy.txt")
-    scipy.io.mmwrite(str(FnTCounts), Counts)
-    Populations = EstimateSimple(Counts)
-    # Save all output
-    Pop_min = 1
-    Pop_max = Populations.max()
-    print 'Writing out population information in %s' % FnPops
-    np.savetxt(FnPops, zip(range(len(Populations)), Populations), fmt='%i\t%f')
-    print 'Writing out energy information in %s' % FnEnergy
-    np.savetxt(FnEnergy, zip(range(len(Populations)), -np.log(Populations)), fmt='%i\t%f')
-    return
 
 def SummaryEnergy(StatesMapping, NodesMapping, Energy='Data/Energy.txt', Outdir='Data'):
     '''Now summarizing energy for each state...'''
@@ -424,7 +391,7 @@ def SummarySync(Attractors, keep, NodesMapping, Outdir='Data'):
     fixed_nodes = []  # record nodes that do not change in all steady state
     Nodes = sorted(NodesMapping, key=lambda x:NodesMapping[x])
     try:
-        mkdir(Outdir)
+        os.mkdir(Outdir)
     except:
         pass
     point_att = file('%s/Point_attractors.csv' % Outdir, 'w')
@@ -471,7 +438,7 @@ def SummarySync(Attractors, keep, NodesMapping, Outdir='Data'):
     print '\nFixed nodes list have been saved to %s/Fixed_nodes.txt' % Outdir
     fixed_out.close()            
     
-def SummaryAsync(Attractors, keep, NodesMapping, StatesMapping, Energy=True, Outdir='Data'):
+def SummaryAsync(Attractors, keep, NodesMapping, StatesMapping,Outdir='Data'):
     '''Summary result of attractors and basins (results from asynchronous mode)'''
     
     def StringAdd(xlist,ystring):
@@ -490,10 +457,6 @@ def SummaryAsync(Attractors, keep, NodesMapping, StatesMapping, Energy=True, Out
     p_att = {}  # record point attractor
     c_att = {}  # record cyclic attractor
     Nodes = sorted(NodesMapping, key=lambda x:NodesMapping[x])
-    try:
-        mkdir(Outdir)
-    except:
-        pass
     point_att = file('%s/Point_attractors.csv' % Outdir, 'w')
     cyclic_att = file('%s/Cyclic_attractors.csv' % Outdir, 'w')
     all_att = file('%s/Attractors.bin' % Outdir, 'wb')
@@ -527,10 +490,6 @@ def SummaryAsync(Attractors, keep, NodesMapping, StatesMapping, Energy=True, Out
     print '\nAttractors information have written in %s/Point_attractors.csv and %s/Cyclic_attractors.csv file' % (Outdir, Outdir)
     print '\nFixed nodes list have been saved to %s/Fixed_nodes.txt' % Outdir
     fixed_out.close()
-    
-    if Energy == True:  #summarizing energy information
-        print 'Summarizing Energy information'
-        SummaryEnergy(state_dic,NodesMapping)
 
     # Summary initial informations for each attractors
     print 'Now summarizing  basins for each attractor'
@@ -594,12 +553,12 @@ if __name__ == '__main__':
     RegNodes, TruthTab, nodes_map, ini_new = ConstructTruthTab(text, keep_new, ini_state)  # after truth table construction the nodes mapping  and initial nodes have changed.
     FreeNodes = len(RegNodes)
     print 'Now identifying attractors, using %s method, please wait...' % INPUT['mode']
-    clock()
     #####two modes are available: sync and async
     if INPUT['mode'] == 'sync':
         all_attractors = FindSteadyState(FreeNodes, ini_new, INPUT['initial_limit'])
         SummarySync(all_attractors, keep_new, nodes_map)
-    elif INPUT['mode'] == 'async':
-        count_m, state_map = Sampling(FreeNodes,INPUT['rounds'],INPUT['steps'],ini_new,INPUT['initial_limit'])
-        run(count_m)
+    else:
+        count_m, state_map = Sampling(FreeNodes,INPUT['rounds'],INPUT['steps'],ini_new,INPUT['initial_limit'],method=INPUT['mode'])
         all_attractors=FindAttractors(count_m)
+        SummaryAsync(all_attractors,keep_new,nodes_map,state_map)
+
