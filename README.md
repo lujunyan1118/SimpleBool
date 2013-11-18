@@ -2,17 +2,17 @@
 
 SimpleBool is a python package for simulation and analysis of dynamic Boolean network models.
 
-This software package was inspired by the pioneering work of István Albert and Réka Albert in bioligical Boolean networks .
-SimpleBool is similar to their python package [Booleannet](http://code.google.com/p/booleannet/) but does not require coding experience. We used a precaculated truth table to update the state of each node and simplified the Boolean model representation. Therefore SimpleBool runs relatively faster than Booleannet. However, for advanced users, Booleannet may be recommended since it is more flexible and contains more complex updating methods such as piece wise differential method. 
+This software package was inspired by the pioneering work of István Albert and Réka Albert in biological Boolean networks .
+SimpleBool is similar to their python package [Booleannet](http://code.google.com/p/booleannet/) but does not require coding experience. We used a pre-calculated truth table to update the state of each node and simplified the Boolean model representation. Therefore SimpleBool runs relatively faster than Booleannet. However, for advanced users, Booleannet may be recommended since it is more flexible and contains more complex updating methods such as piece wise differential method. 
 
 
 ##Features
 
-1. Automatically running simulations of a Boolean network model and ploting results. 
+1. Automatically running simulations of a Boolean network model and plotting results. 
 2. Using model input file (containing Boolean rules) and parameter input file as inputs. No coding experience is required.
 3. Easily performing systematic node perturbations studies. Both single and multiple perturbations are supported.
 4. Constructing the state transition graph of a Boolean network model from all initial states or randomly chosen initial states.
-5. Automatically identifying attractos and basins of attraction of a Boolean network model. 
+5. Automatically identifying attractors and basins of attraction of a Boolean network model. 
 
 ##Requirements
 
@@ -20,18 +20,18 @@ SimpleBool works on Python 2.7.
 
 Matplotlib(http://matplotlib.org/) is required for BoolSimu.py to plot simulation results.
 
-Numpy(http://www.numpy.org/) and netowrkX(http://networkx.github.io/) are required for BoolAttractor.py to construct state transition graph and identify attractos.
+Numpy(http://www.numpy.org/) and networkX(http://networkx.github.io/) are required for BoolAttractor.py to construct state transition graph and identify attractors.
 
-Enthough Python distribution or Enthought Canopy (https://www.enthought.com/) is highly recommended since they contain all the packages that SimpleBool needed.
+Enthought Python distribution or Enthought Canopy (https://www.enthought.com/) is highly recommended since they contain all the packages that SimpleBool needed.
 
 ##Installation
 
 No particular installation steps are needed.
 
-For Windows, just copy these scripts to your workding directory where your model input file and simulation parameter file exsit and excuting the scripts.
+For Windows, just copy these scripts to your working directory where your model input file and simulation parameter file exits and execute the scripts.
 
-For Linux, you can change the permission of the scripts to excutable using 'chmod +X' and copy them to some directory that in your PATH environment variable.
-Or you can also put them in your working directory containing the model input file and parameter input file and typing 'python [scrip name]' to excute the script.
+For Linux, you can change the permission of the scripts to executable using 'chmod +X' and copy them to some directory that in your PATH environment variable.
+Or you can also put them in your working directory containing the model input file and parameter input file and typing 'python [scrip name]' to execute the script.
 
 
 ##Quick Reference
@@ -54,9 +54,9 @@ D* = not B
 
 'A* = B or C' means the new value of A are determined by the old value of B and C.
 
-A sample model input file of a Boolean network model describing the development of colitis-associated colon caner: [CAC.txt](https://github.com/lujunyan1118/SimpleBool/blob/master/CAC.txt) 
+A sample model input file of a Boolean network model describing the development of colitis-associated colon caner: [CAC.txt](https://github.com/lujunyan1118/SimpleBool/blob/master/examples/CAC.txt) 
 
-###Running simulations and ploting using BoolSimu.py
+###Running simulations and plotting using BoolSimu.py
 For using BoolSimu.py to perform dynamic simulations on a Boolean network model and plot the simulation results, a parameter input file named 'simu.in' is needed to specify the simulation and plotting information.
 
 The "simu.in" file looks like:
@@ -66,7 +66,7 @@ turn_on = DC
 turn_off =
 ini_on = APC,IKB
 ini_off = Proliferation,Apoptosis
-mode=async
+mode=sync
 rounds = 500
 steps = 30
 plot_nodes = Apoptosis,Proliferation,IL6,TNFA,NFKB,STAT3
@@ -74,17 +74,17 @@ missing=random
 ```
 **rules**: 'rules' specifies the model input file ('CAC.txt').
 
-**turn_on**, **turn_off**: 'turn_on' and 'turn_off' each accepts a list of node names seperated by ','. These two parameters specify the nodes that need to be **kept** in ON state or OFF state during simulation.
+**turn_on**, **turn_off**: 'turn_on' and 'turn_off' each accepts a list of node names separated by ','. These two parameters specify the nodes that need to be **kept** in ON state or OFF state during simulation.
 
-**ini_on**, **ini_off**: 'ini_on' and 'ini_off' each accepts a list of node names seperated by ','. These two parameters specify the nodes whose states should be set in ON or OFF states **at the first step** of simulation.
+**ini_on**, **ini_off**: 'ini_on' and 'ini_off' each accepts a list of node names separated by ','. These two parameters specify the nodes whose states should be set in ON or OFF states **at the first step** of simulation.
 
-**mode**: this parameter specifies the updating method. Three methods are implemented: 'Sync' (Synchronous updating method), 'GA' (General Asynchronous updating method) and 'ROA' (Random Order Asynchronous updating method). For the detailed explaination of these three methods, please consult the papers [Attractor analysis of asynchronous Boolean models of signal transduction networks](http://www.sciencedirect.com/science/article/pii/S0022519310003796) by Assieh Saadatpoura, István Albertb and Réka Albert.
+**mode**: this parameter specifies the updating method. Three methods are implemented: 'Sync' (Synchronous updating method), 'GA' (General Asynchronous updating method) and 'ROA' (Random Order Asynchronous updating method). For the detailed explanation of these three methods, please consult the papers [Attractor analysis of asynchronous Boolean models of signal transduction networks](http://www.sciencedirect.com/science/article/pii/S0022519310003796) by Assieh Saadatpoura, István Albertb and Réka Albert.
 
 **rounds**: 'rounds' specifies the rounds of simulation started from randomly selected initial states.
 
 **steps**: 'steps' specified the steps of iteration during each round of simulation.
 
-**plot_nodes**: this parameter specifies the nodes whose simulation results needed to be ploted when the simulation is done.
+**plot_nodes**: this parameter specifies the nodes whose simulation results needed to be plotted when the simulation is done.
 
 **missing**: this parameter specified the states of those nodes whose initial states are not determined from 'turn_on','turn_off','ini_on' and 'ini_off'.
 
@@ -93,7 +93,7 @@ missing=random
 
 ###Performing node perturbation studies using BoolMutation.py
 
-A parameter input file, named "mutation.in", is needed to perform the node perturbations using BoolMutations.py
+A parameter input file, named "mutation.in", is needed to perform the node perturbations using BoolMutation.py
 
 The "mutation.in" file looks like:
 ```
@@ -113,7 +113,7 @@ observe_list=Proliferation,Apoptosis,STAT3,NFKB,BCATENIN
 
 This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 
-**mutation_list**: 'mutation_list' specifies the files that contain the nodes that need to be perturbed. Sample input list of nodes: [list_ON.txt](http://www.ww),[list_OFF.txt](http://www.www).
+**mutation_list**: 'mutation_list' specifies the files that contain the nodes that need to be perturbed. Sample input list of nodes: [list_ON.txt](https://github.com/lujunyan1118/SimpleBool/blob/master/examples/list_ON.txt),[list_OFF.txt](https://github.com/lujunyan1118/SimpleBool/blob/master/examples/list_OFF.txt).
 
 **keep_state**: 'keep_state' specifies the perturbed state of the nodes in each nodes list provided by 'mutation_list' parameter, accordingly.
 
@@ -142,11 +142,11 @@ initial_limit=0
 ```
 This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 
-**initial_limit**: this parameter specifies the maximum number of initial states generated when constructing the state transition graph. "0" means no limitation and BoolAttractory.py this will use all the possible initial states to construct the state transition graph. For a Boolean network with n nodes, the number of states is 2^n. Therefore, for large Boolean networks, using all the possible initial states may be extremely slow or run into memory problems.  
+**initial_limit**: this parameter specifies the maximum number of initial states generated when constructing the state transition graph. "0" means no limitation and BoolAttractor.py this will use all the possible initial states to construct the state transition graph. For a Boolean network with n nodes, the number of states is 2^n. Therefore, for large Boolean networks, using all the possible initial states may be extremely slow or run into memory problems.  
 
-* When finished, a folder named 'Data' contaning the all result files is generated in the working directory.
+* When finished, a folder named 'Data' containing the all result files is generated in the working directory.
 
-* These results incude the whole state transition graph ('**TransGraph.txt**'), the information of point attractors and cyclic attractors ('**Point_attractors.csv**' and '**Cyclic_attractors.csv**'), summarization of the basins of attractors and basin intersections ('**Summary_basin.txt**'), and the nodes that stablized on a certain state in all the attractos ('**Fixed_nodes**').
+* These results include the whole state transition graph ('**TransGraph.txt**'), the information of point attractors and cyclic attractors ('**Point_attractors.csv**' and '**Cyclic_attractors.csv**'), summarization of the basins of attractors and basin intersections ('**Summary_basin.txt**'), and the nodes that stabilized on a certain state in all the attractors ('**Fixed_nodes**').
 
 
 ##Authors
@@ -161,4 +161,3 @@ Center for Systems Biology, Soochow University, 215006, China
 
 ##Copyrights
 Copyright (C) 2013  Junyan Lu under [GPL3.0](https://github.com/lujunyan1118/SimpleBool/blob/master/LICENSE)
-
