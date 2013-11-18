@@ -150,10 +150,13 @@ This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 
 
 ##Authors
-Junyan Lu  jylu@aliyun.com.cn
+
+Junyan Lu  lujunyan_1118@aliyun.com.cn
+
 Drug Discovery and Design Center, Shanghai Institute of Materia Medica, Chinese Academy of Sciences
 
 Zhongjie Liang  zjliang@suda.edu.cn
+
 Center for Systems Biology, Soochow University, 215006, China
 
 ##Copyrights
