@@ -1,6 +1,9 @@
 #SimpleBool
 
-A python package for simulation and analysis of dynamic Boolean network models
+SimpleBool is a python package for simulation and analysis of dynamic Boolean network models.
+
+This software package was inspired by the pioneering work of István Albert and Réka Albert in bioligical Boolean networks .
+SimpleBool is similar to their python package [Booleannet](http://code.google.com/p/booleannet/) but does not require coding experience. We used a precaculated truth table to update the state of each node and simplified the Boolean model representation. Therefore SimpleBool runs relatively faster than Booleannet. However, for advanced users, Booleannet may be recommended since it is more flexible and contains more complex updating methods such as piece wise differential method. 
 
 
 ##Features
@@ -144,4 +147,15 @@ This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 * When finished, a folder named 'Data' contaning the all result files is generated in the working directory.
 
 * These results incude the whole state transition graph ('**TransGraph.txt**'), the information of point attractors and cyclic attractors ('**Point_attractors.csv**' and '**Cyclic_attractors.csv**'), summarization of the basins of attractors and basin intersections ('**Summary_basin.txt**'), and the nodes that stablized on a certain state in all the attractos ('**Fixed_nodes**').
+
+
+##Authors
+Junyan Lu  jylu@aliyun.com.cn
+Drug Discovery and Design Center, Shanghai Institute of Materia Medica, Chinese Academy of Sciences
+
+Zhongjie Liang  zjliang@suda.edu.cn
+Center for Systems Biology, Soochow University, 215006, China
+
+##Copyrights
+Copyright (C) 2013  Junyan Lu under GPL3.0
 
