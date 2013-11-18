@@ -46,9 +46,44 @@ D* = not B
 ```
 
 'A','B','C','D' are the nodes' names in a Boolean network. In a particular biological network, a nodes can be a protein, a gene or a small molecule.
+
 'and', 'or' and 'not' are logical operators that define the regulatory relationships between target node and its regulators. Parentheses can be used to denote the priority of the regulatory relationships. 
+
 'A* = B or C' means the new value of A are determined by the old value of B and C.
 
-A sample model input file of a Boolean network model describing the development of colitis-associated colon caner: [CAC.txt](http://aaa.com) 
+A sample model input file of a Boolean network model describing the development of colitis-associated colon caner: [CAC.txt](https://github.com/lujunyan1118/SimpleBool/blob/master/CAC.txt) 
+
+###Running simulations and ploting using BoolSimu.py
+For using BoolSimu.py to perform dynamic simulations on a Boolean network model and plot the simulation results, a parameter input file named 'simu.in' is needed to specify the simulation and plotting information.
+
+The "simu.in" file looks like:
+```
+rules = CAC.txt
+turn_on = DC
+turn_off =
+ini_on = APC,IKB
+ini_off = Proliferation,Apoptosis
+mode=async
+rounds = 500
+steps = 30
+plot_nodes = Apoptosis,Proliferation,IL6,TNFA,NFKB,STAT3
+missing=random
+```
+**rules**: 'rules' specifies the model input file ('CAC.txt').
+
+**turn_on**, **turn_off**: 'turn_on' and 'turn_off' each accepts a list of node names seperated by ','. These two parameters specify the nodes that need to be **kept** in ON state or OFF state during simulation.
+
+**ini_on**, **ini_off**: 'ini_on' and 'ini_off' each accepts a list of node names seperated by ','. These two parameters specify the nodes whose states should be set in ON or OFF states **at the first step** of simulation.
+
+**mode**: this parameter specifies the updating method. Three methods are implemented: 'Sync' (Synchronous updating method), 'GA' (General Asynchronous updating method) and 'ROA' (Random Order Asynchronous updating method). For the detailed explaination of these three methods, please consult the papers [Attractor analysis of asynchronous Boolean models of signal transduction networks](http://www.sciencedirect.com/science/article/pii/S0022519310003796) by Assieh Saadatpoura, István Albertb and Réka Albert.
+
+**rounds**: 'rounds' specifies the rounds of simulation started from randomly selected initial states.
+
+**steps**: 'steps' specified the steps of iteration during each round of simulation.
+
+**plot_nodes**: this parameter specifies the nodes whose simulation results needed to be ploted when the simulation is done.
+
+**missing**: this parameter specified the states of those nodes whose initial states are not determined from 'turn_on','turn_off','ini_on' and 'ini_off'.
+
 
 
