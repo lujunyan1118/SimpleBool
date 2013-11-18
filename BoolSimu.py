@@ -50,7 +50,7 @@ class Model:
                      'turn_off' :    '',
                      'rounds'   :    1,
                      'steps'    :    1,
-                     'mode'     :    'sync',
+                     'mode'     :    'Sync',
                      'plot_nodes' :  '',
                      'missing'    :  'random'
                     }  # define parameters
@@ -82,7 +82,7 @@ class Model:
             except:
                 print "Error: Invalid input data types!"
         
-            if INPUT['mode'] not in ['async', 'sync','ROA']: print "Wrong simulation method! Using 'sync' or 'async'"
+            if INPUT['mode'] not in ['GA', 'Sync','ROA']: print "Wrong simulation method! Using 'Sync', 'GA' or 'ROA'"
             return INPUT
         
         def GetNodes(expression):
@@ -179,7 +179,7 @@ class Model:
             self.INITIAL[node]=state
         
         self.REG_NODES,self.TRUTH_TAB,self.MAPPING=ConstructTruthTab(open(INPUT['rules']).read(),self.KEEP)
-        model_verbose={'sync':'Synchronous','async':'General Asynchrounous','ROA':'Random Order Asynchrounous'}
+        model_verbose={'Sync':'Synchronous','GA':'General Asynchrounous','ROA':'Random Order Asynchrounous'}
         print '''Model initialization completed!
         
 Total nodes number:    %s
@@ -261,9 +261,9 @@ Simulation mode:    %s
             prev=ini_state
             collect[0]=StringAdd(collect[0],prev)
             for s in range(steps):
-                if self.INPUT['mode']=='sync':
+                if self.INPUT['mode']=='Sync':
                     next=IterOneSync(prev)
-                elif self.INPUT['mode']=='async':
+                elif self.INPUT['mode']=='GA':
                     next=IterOneAsync(prev)
                 elif self.INPUT['mode'] == 'ROA':
                     next=IterOneROA(prev)
@@ -320,7 +320,10 @@ def write_data(results,file_out='data.txt',window=1):
     data_out.close()
 
 if __name__ == '__main__':
+    try:
         model=Model(sys.argv[1])
-        results=model.IterModel(missing='random')
-        write_data(results)
-        plot_result(results,model.INPUT['plot_nodes'],marker=False)
+    except:
+        model=Model('simu.in')
+    results=model.IterModel(missing='random')
+    write_data(results)
+    plot_result(results,model.INPUT['plot_nodes'],marker=False)
