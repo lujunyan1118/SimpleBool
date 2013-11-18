@@ -38,10 +38,17 @@ A model input file is a text file that contains the Boolean rules for each node 
 
 A simple model input file for a 4-node Boolean network model may look like:
 
+```
 A* = B or C
 B* = A and D
 C* = (A or B) and not D
 D* = not B
+```
 
+'A','B','C','D' are the nodes' names in a Boolean network. In a particular biological network, a nodes can be a protein, a gene or a small molecule.
+'and', 'or' and 'not' are logical operators that define the regulatory relationships between target node and its regulators. Parentheses can be used to denote the priority of the regulatory relationships. 
+'A* = B or C' means the new value of A are determined by the old value of B and C.
+
+A sample model input file of a Boolean network model describing the development of colitis-associated colon caner: [CAC.txt](http://aaa.com) 
 
 
