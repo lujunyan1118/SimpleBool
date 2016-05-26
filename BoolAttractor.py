@@ -226,7 +226,7 @@ def GenIni(NumNodes,limit=0) :
     show_percent = 10  # a variable control the showing frequency of progress
     total_ini = 2 ** NumNodes
     if limit > total_ini:
-        limie=total_ini
+        limit=total_ini
     if limit == 0:
         abs_step = int((total_ini * show_percent) / 100)
         print 'Total %s (2^%s) initial states' % (2 ** NumNodes, NumNodes)
@@ -335,7 +335,7 @@ def FindAttractors(Counts,folder='Data'):
         pass
     print 'Now identifying basins for each attractor...'
     for attractor in attractors:
-        basin_tree=nx.dfs_tree(ReTransNet,attractor[0])  #just need to find the sons of the first node in attractor
+        basin_tree=nx.dfs_tree(ReTransNet,list(attractor)[0])  #just need to find the sons of the first node in attractor
         results[tuple(attractor)]=basin_tree.nodes()
         #results_origin[tuple(attractor)]=[leaf for leaf in basin if ReTransNet.out_degree(leaf) == 0] # record initial states of attractors
         #AttNet=TransNet.subgraph(attractor)
