@@ -129,7 +129,7 @@ class Model:
             RegNodes = []  # a list contain regulator of each node as a tuple. The tuple index in the list is the target node index
             TruthTab = []  # a list of dictionary contain the truth table for each node. The sequence is in consist with node sequence in mapping
             for line in booltext.split('\n'):
-                if line != '' and line[0] != '#':
+                if line.strip() != '' and line[0] != '#':
                     line_nodes = GetNodes(line)
                     target_nodes = target_nodes | set([line_nodes[0]])
                     all_nodes = all_nodes | set(line_nodes)
