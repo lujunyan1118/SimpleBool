@@ -66,12 +66,15 @@ turn_on = DC
 turn_off =
 ini_on = APC,IKB
 ini_off = Proliferation,Apoptosis
-mode=sync
+mode = Sync
 rounds = 500
 steps = 30
 plot_nodes = Apoptosis,Proliferation,IL6,TNFA,NFKB,STAT3
-missing=random
+missing = random
 ```
+
+Run the script by typing "python BoolSimu.py simu.in".
+
 **rules**: 'rules' specifies the model input file ('CAC.txt').
 
 **turn_on**, **turn_off**: 'turn_on' and 'turn_off' each accepts a list of node names separated by ','. These two parameters specify the nodes that need to be **kept** in ON state or OFF state during simulation.
@@ -110,6 +113,8 @@ keep_state=False,True
 mutation_mode=single
 observe_list=Proliferation,Apoptosis,STAT3,NFKB,BCATENIN
 ```
+
+Run the script by typing "python BoolMutation.py mutation.in".
 
 This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 
