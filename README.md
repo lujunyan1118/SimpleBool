@@ -6,7 +6,7 @@ This software package was inspired by the pioneering work of István Albert and 
 SimpleBool is similar to their python package [Booleannet](http://code.google.com/p/booleannet/) but does not require coding experience. We used a pre-calculated truth table to update the state of each node and simplified the Boolean model representation. Therefore SimpleBool runs relatively faster than Booleannet. However, for advanced users, Booleannet may be recommended since it is more flexible and contains more complex updating methods such as piece wise differential method. 
 
 
-##Features
+## Features
 
 1. Automatically running simulations of a Boolean network model and plotting results. 
 2. Using model input file (containing Boolean rules) and parameter input file as inputs. No coding experience is required.
@@ -14,7 +14,7 @@ SimpleBool is similar to their python package [Booleannet](http://code.google.co
 4. Constructing the state transition graph of a Boolean network model from all initial states or randomly chosen initial states.
 5. Automatically identifying attractors and basins of attraction of a Boolean network model. 
 
-##Requirements
+## Requirements
 
 SimpleBool works on Python 2.7 (Python 3.0 or higher is not supported). 
 
@@ -24,7 +24,7 @@ Numpy(http://www.numpy.org/) and networkX(http://networkx.github.io/) are requir
 
 Enthought Python distribution or Enthought Canopy (https://www.enthought.com/) is highly recommended since they contain all the packages that SimpleBool needed.
 
-##Installation
+## Installation
 
 No particular installation steps are needed.
 
@@ -34,9 +34,9 @@ For Linux, you can change the permission of the scripts to executable using 'chm
 Or you can also put them in your working directory containing the model input file and parameter input file and typing 'python [scrip name]' to execute the script.
 
 
-##Quick Reference
+## Quick Reference
 
-###Model input file
+### Model input file
 A model input file is a text file that contains the Boolean rules for each node in the network. A model input file can be considered as the definition of a Boolean network model.
 
 A simple model input file for a 4-node Boolean network model may look like:
@@ -56,7 +56,7 @@ D* = not B
 
 A sample model input file of a Boolean network model describing the development of colitis-associated colon caner: [CAC.txt](https://github.com/lujunyan1118/SimpleBool/blob/master/examples/CAC.txt) 
 
-###Running simulations and plotting using BoolSimu.py
+### Running simulations and plotting using BoolSimu.py
 For using BoolSimu.py to perform dynamic simulations on a Boolean network model and plot the simulation results, a parameter input file named 'simu.in' is needed to specify the simulation and plotting information.
 
 The "simu.in" file looks like:
@@ -94,7 +94,7 @@ Run the script by typing "python BoolSimu.py simu.in".
 * The parameter file, model input file should be in the same folder. 
 
 
-###Performing node perturbation studies using BoolMutation.py
+### Performing node perturbation studies using BoolMutation.py
 
 A parameter input file, named "mutation.in", is needed to perform the node perturbations using BoolMutation.py
 
@@ -128,7 +128,7 @@ This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 
 * BoolMutation.py writes out a .csv file that contain the perturbed nodes and their states, as well as the states of the nodes specified in the 'observe_list'.
 
-###Identifying attractors and basins of attraction using BoolAttractor.py
+### Identifying attractors and basins of attraction using BoolAttractor.py
 
 Similarly, a parameter input file, "steady.in", is needed by BoolAttractor.py
 
@@ -154,7 +154,7 @@ This first eight parameters are the same as 'simu.in' used by BoolSimu.py
 * These results include the whole state transition graph ('**TransGraph.txt**'), the information of point attractors and cyclic attractors ('**Point_attractors.csv**' and '**Cyclic_attractors.csv**'), summarization of the basins of attractors and basin intersections ('**Summary_basin.txt**'), and the nodes that stabilized on a certain state in all the attractors ('**Fixed_nodes**').
 
 
-##Authors
+## Authors
 
 Junyan Lu  lujunyan_1118@aliyun.com.cn
 
@@ -164,5 +164,5 @@ Zhongjie Liang  zjliang@suda.edu.cn
 
 Center for Systems Biology, Soochow University, 215006, China
 
-##Copyrights
+## Copyrights
 Copyright (C) 2013  Junyan Lu under [GPL3.0](https://github.com/lujunyan1118/SimpleBool/blob/master/LICENSE)
