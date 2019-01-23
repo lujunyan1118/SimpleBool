@@ -1,4 +1,4 @@
-#SimpleBool
+# SimpleBool
 
 SimpleBool is a python package for simulation and analysis of dynamic Boolean network models.
 
@@ -16,7 +16,7 @@ SimpleBool is similar to their python package [Booleannet](http://code.google.co
 
 ##Requirements
 
-SimpleBool works on Python 2.7. 
+SimpleBool works on Python 2.7 (Python 3.0 or higher is not supported). 
 
 Matplotlib(http://matplotlib.org/) is required for BoolSimu.py to plot simulation results.
 
